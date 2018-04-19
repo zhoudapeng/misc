@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+	<appender name="log4jDemoAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="D:/qunar/mycode/log4j.log" /><!-- 设置日志输出文件名 -->
+		<!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
+		<param name="Append" value="true" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="commonsLoggingDemoAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="D:/qunar/mycode/commons-log.log" /><!-- 
+			设置日志输出文件名 -->
+		<!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
+		<param name="Append" value="true" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="slf4jDemoAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="D:/qunar/mycode/slf4j-log.log" /><!-- 设置日志输出文件名 -->
+		<!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
+		<param name="Append" value="true" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="CoalescingStatistics"
+		class="org.perf4j.log4j.AsyncCoalescingStatisticsAppender">
+		<!-- The TimeSlice option means timing logs are aggregated every 10 secs. -->
+		<param name="TimeSlice" value="100" />
+		<appender-ref ref="fileAppender" />
+	</appender>
+
+	<appender name="fileAppender" class="org.apache.log4j.FileAppender">
+		<param name="File" value="D:/qunar/mycode/perfStats.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m%n" />
+		</layout>
+	</appender>
+	
+
+	<logger name="org.perf4j.TimingLogger" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="CoalescingStatistics" />
+	</logger>
+
+	<!-- 指定logger的设置，additivity指示是否遵循缺省的继承机制 -->
+	<logger name="Log4jDemo" additivity="false">
+		<level value="info" />
+		<appender-ref ref="log4jDemoAppender" />
+	</logger>
+
+	<logger name="CommonsLoggingDemo" additivity="false">
+		<level value="info" />
+		<appender-ref ref="commonsLoggingDemoAppender" />
+	</logger>
+
+	<logger name="Slf4jDemo" additivity="false">
+		<level value="info" />
+		<appender-ref ref="slf4jDemoAppender" />
+	</logger>
+
+	<!-- 根logger的设置 -->
+	<root>
+		<level value="info" />
+		<appender-ref ref="log4jDemoAppender" />
+	</root>
+</log4j:configuration>  
